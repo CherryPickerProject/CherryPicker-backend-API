@@ -1,12 +1,10 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const swagger = require('swagger-ui-express');
-const PORT = 9000;
 const swaggerDoc = require('../swagger');
-
 const router = require('./routes/index.js');
-
 const app = express();
+const PORT = 9000;
 
 app.use(bodyParser.json());
 app.use('/api-docs', swagger.serve, swagger.setup(swaggerDoc));
