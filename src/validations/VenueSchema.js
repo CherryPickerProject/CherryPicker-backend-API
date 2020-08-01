@@ -10,7 +10,9 @@ const getVenues = Joi.object({
     price: Joi.number().optional(),
 });
 
+const getOneVenue = Joi.string().required();
 
 module.exports = {
-    getVenues
+    getVenues,
+    getOneVenue
 }

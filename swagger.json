@@ -166,6 +166,31 @@
                     }
                 }
             }
+        },
+        "/health": {
+            "get": {
+                "tags": [
+                    "health"
+                ],
+                "summary": "To test if API service is available.",
+                "operationId": "testHealth",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "http",
+                                    "example": "OK"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequestError"
+                    }
+                }
+            }
         }
     },
     "components": {
