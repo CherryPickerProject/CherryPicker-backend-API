@@ -10,6 +10,11 @@ async function getAll(query) {
     return await MongoDB.getAll(filteredQuery, query.activePage);
 }
 
+async function getOne(venueId) {
+    return await MongoDB.getOne(venueId);
+}
+
 module.exports = {
     getAll,
+    getOne
 };
