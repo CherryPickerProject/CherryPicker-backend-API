@@ -2,9 +2,11 @@
   "name": "cherrypicker-backend-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index",
+    "dev": "nodemon --watch src src/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/CherryPickerProject/CherryPicker-backend-API/issues"
   },
-  "homepage": "https://github.com/CherryPickerProject/CherryPicker-backend-API#readme"
+  "homepage": "https://github.com/CherryPickerProject/CherryPicker-backend-API#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "nodemon": "^2.0.4",
+    "swagger-ui-express": "^4.1.4"
+  }
 }
