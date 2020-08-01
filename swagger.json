@@ -17,7 +17,7 @@
                     "venues"
                 ],
                 "summary": "Get all Venues",
-                "description": "This API Call will return venues stored in the DB based on the filters. Only 10 results will be returned at any point in time. Please pass in the following parameters to receive a result. Example: http://localhost:9000/api/0.1/venues?category=foodBeverages&keyword=restaurant&region=east&pax=70&rating=2&price=300&activePage=3",
+                "description": "This API Call will return venues stored in the DB based on the filters. Only 10 results will be returned at any point in time. Please pass in the following parameters to receive a result. Example: http://localhost:9000/api/0.1/venues?category=foodBeverages&keyword=restaurant&region=east&pax=70&ratings=2&price=300&activePage=3",
                 "operationId": "getAllVenues",
                 "parameters": [
                     {
@@ -75,6 +75,15 @@
                     },
                     {
                         "in": "query",
+                        "name": "ratings",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "The number of ratings."
+                    },
+                    {
+                        "in": "query",
                         "name": "price",
                         "required": false,
                         "schema": {
@@ -95,7 +104,18 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object",
-                                    "$ref": "#/components/schemas/Venue"
+                                    "properties": {
+                                        "totalRecords": {
+                                            "type": "integer",
+                                            "example": 40
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Venue"
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -151,9 +171,8 @@
     "components": {
         "schemas": {
             "GeneratedId": {
-                "type": "integer",
-                "format": "int64",
-                "example": 1
+                "type": "string",
+                "example": "5f251cd4204ca44a9c2102ae"
             },
             "Link": {
                 "type": "string",
@@ -202,7 +221,7 @@
             "Venue": {
                 "type": "object",
                 "properties": {
-                    "id": {
+                    "_id": {
                         "$ref": "#/components/schemas/GeneratedId"
                     },
                     "ratings": {
@@ -231,8 +250,8 @@
                         "$ref": "#/components/schemas/Price"
                     },
                     "pax": {
-                        "type": "string",
-                        "example": "40"
+                        "type": "integer",
+                        "example": 40
                     },
                     "description": {
                         "type": "string",
@@ -245,14 +264,6 @@
                     "promos": {
                         "type": "string",
                         "example": "Free 1 bottle of mineral water for each guest. One free flow of chinese tea for each room. 10% discount for all booking."
-                    },
-                    "created-at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated-at": {
-                        "type": "string",
-                        "format": "date-time"
                     }
                 }
             },
