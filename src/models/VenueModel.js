@@ -7,11 +7,11 @@ async function getAll(query) {
         tags: { $regex: query.keyword ? query.keyword : {}, $options: "i" },
         pax: { $gte: query.pax ? parseInt(query.pax) : 0 }
     }
-    return await MongoDB.getAll(filteredQuery, query.activePage);
+    return await MongoDB.getAllVenues(filteredQuery, query.activePage);
 }
 
 async function getOne(venueId) {
-    return await MongoDB.getOne(venueId);
+    return await MongoDB.getOneVenue(venueId);
 }
 
 module.exports = {

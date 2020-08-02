@@ -2,7 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const DATABASE_NAME = "CherryPickerDB";
 const LIMIT = 10 // The maximum number of records that can be returned in a request
-let collection;
+let venueCollection;
+let categoriesCollection;
 
 async function connect() {
     const url = process.env.MONGODB_CONNECTION_STRING
@@ -11,17 +12,28 @@ async function connect() {
             console.log('Error occurred while connecting to MongoDB Atlas...\n', err);
         }
         console.log('Successfully Connected to MongoDB Atlas...');
-        collection = client.db(DATABASE_NAME).collection("venues");
-        const doc = await collection.countDocuments();
-        console.log(doc + " documents in collection.");
-        console.log("Ready to accept requests.");
+        venueCollection = client.db(DATABASE_NAME).collection("venues");
+        categoriesCollection = client.db(DATABASE_NAME).collection("categories");
+        const doc = await venueCollection.countDocuments();
+        console.log(doc + " documents in venues collection.");
+        console.log("Ready to accept requests...");
     });
 }
 
+async function getAllCategories() {
+    const categories = []
+    const cursor = await categoriesCollection.find({});
+    await cursor.forEach(element => {
+        categories.push(element);
+    });
+    const count = await cursor.count();
+    return { totalRecords: count, data: categories };
+}
+
 // activePage: Assumed to be indexed from 1
-async function getAll(query, activePage) {
+async function getAllVenues(query, activePage) {
     const docs = [];
-    const cursor = await collection.find(query).limit(LIMIT).skip((activePage - 1) * LIMIT);
+    const cursor = await venueCollection.find(query).limit(LIMIT).skip((activePage - 1) * LIMIT);
     await cursor.forEach(element => {
         docs.push(element);
     });
@@ -29,12 +41,14 @@ async function getAll(query, activePage) {
     return { totalRecords: count, data: docs };
 }
 
-async function getOne(venueId) {
-    const singleVenue = await collection.findOne({ "_id": ObjectID("5f251cd4204ca44a9c210301") });
+async function getOneVenue(venueId) {
+    const singleVenue = await venueCollection.findOne({ "_id": ObjectID(venueId) });
     return singleVenue;
 }
+
 module.exports = {
     connect,
-    getAll,
-    getOne
+    getAllCategories,
+    getAllVenues,
+    getOneVenue
 }

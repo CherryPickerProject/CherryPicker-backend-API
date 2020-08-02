@@ -191,6 +191,41 @@
                     }
                 }
             }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "category"
+                ],
+                "summary": "Get all venue categories.",
+                "operationId": "getCategories",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "totalRecords": {
+                                            "type": "integer",
+                                            "example": 7
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequestError"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -241,6 +276,18 @@
                 "items": {
                     "type": "string",
                     "example": "Food"
+                }
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "$ref": "#/components/schemas/GeneratedId"
+                    },
+                    "categoryName": {
+                        "type": "string",
+                        "example": "F&B"
+                    }
                 }
             },
             "Venue": {
