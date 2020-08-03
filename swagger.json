@@ -287,6 +287,10 @@
                     "categoryName": {
                         "type": "string",
                         "example": "F&B"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Explore our list of restaurants and Cafes which make great places for meetings or celebrations.."
                     }
                 }
             },
