@@ -3,7 +3,9 @@ const express = require('express');
 const swagger = require('swagger-ui-express');
 const swaggerDoc = require('../swagger');
 const router = require('./routes/index.js');
-const MongoDB = require("./libs/MongoDB_Atlas");
+const MongoDB = require("./api/MongoDB_Atlas");
+const ElasticSearch = require("./api/Elasticsearch");
+
 require('dotenv').config();
 
 const app = express();
@@ -19,4 +21,7 @@ async function init() {
     console.log(`CherryPicker API is listening at http://localhost:${PORT}`);
 
     await MongoDB.connect();
+
+    await ElasticSearch.connect();
+
 }
