@@ -1,17 +1,16 @@
+require('dotenv').config();
 const express = require('express');
-const MongoDB = require('./libs/MongoDB_Atlas');
 const serverless = require('serverless-http');
 const index = require('./index');
 const app = express();
-require('dotenv').config();
 
-async function init() {
+function init() {
   console.log(`CherryPicker API is starting initialisation...`);
 
-  await MongoDB.connect();
+  index.setUpRoutes(app);
 }
 
 const PORT = 9000;
-app.listen(PORT, init(), index.setUpRoutes(app));
+app.listen(PORT, init());
 
 module.exports.handler = serverless(app);
