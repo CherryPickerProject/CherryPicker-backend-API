@@ -76,7 +76,6 @@ async function getOneVenue(venueId) {
 }
 
 module.exports = {
-  connect,
   getAllCategories,
   getAllVenues,
   getOneVenue
