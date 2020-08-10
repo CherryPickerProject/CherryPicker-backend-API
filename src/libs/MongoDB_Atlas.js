@@ -6,6 +6,11 @@ let venueCollection;
 let categoriesCollection;
 let cachedDb = null;
 
+// The reason why we do a connect() each time a request is sent is because the original code
+// of making one connection to db at index.js does not work on aws lambda even though it works locally.
+// Previously, lambda did not return from the connect() function and hence venueCollection and categoriesCollection
+// were always undefined. It could be due to some async, await concepts that we misunderstood.
+// TODO: Explore in the future
 function connect() {
   const url = process.env.MONGODB_CONNECTION_STRING;
   console.log('Connecting to mongodb atlas...');
