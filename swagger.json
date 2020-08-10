@@ -1,432 +1,414 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "CherryPicker API Service",
-        "description": "This is the API definitions for CherryPicker Project",
-        "version": "0.1.0"
-    },
-    "servers": [
-        {
-            "url": "http://localhost:9000/api/0.1"
-        }
-    ],
-    "paths": {
-        "/venues": {
-            "get": {
-                "tags": [
-                    "venues"
-                ],
-                "summary": "Get all Venues",
-                "description": "This API Call will return venues stored in the DB based on the filters. Only 10 results will be returned at any point in time. Please pass in the following parameters to receive a result. Example: http://localhost:9000/api/0.1/venues?category=foodBeverages&keyword=restaurant&region=east&pax=70&ratings=2&price=300&activePage=3",
-                "operationId": "getAllVenues",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "activePage",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "minimum": 1
-                        },
-                        "description": "The number of pages (of 10 entries) to skip before retrieving the result set."
-                    },
-                    {
-                        "in": "query",
-                        "name": "keyword",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "The user's input in the search bar."
-                    },
-                    {
-                        "in": "query",
-                        "name": "category",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "The category that the user wants to view."
-                    },
-                    {
-                        "in": "query",
-                        "name": "region",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "North",
-                                "South",
-                                "East",
-                                "West",
-                                "Central"
-                            ]
-                        },
-                        "description": "The region of venue."
-                    },
-                    {
-                        "in": "query",
-                        "name": "pax",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "The number of pax."
-                    },
-                    {
-                        "in": "query",
-                        "name": "ratings",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "The number of ratings."
-                    },
-                    {
-                        "in": "query",
-                        "name": "price",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "description": "The maximum price of venue."
-                    }
-                ],
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Below is an example format of a single returned item upon a successful operation. Note that only 10 of such objects would be returned.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "totalRecords": {
-                                            "type": "integer",
-                                            "example": 40
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Venue"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequestError"
-                    }
-                }
-            }
-        },
-        "/venues/{id}": {
-            "get": {
-                "tags": [
-                    "venues"
-                ],
-                "summary": "Get more information about a single venue.",
-                "description": "Please pass in the ID of the single venue that you want to search for as a query path. http://localhost:9000/api/0.1/venues/{id}",
-                "operationId": "getSingleVenue",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/GeneratedId"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Below is an example format of a single returned item upon a successful operation.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "$ref": "#/components/schemas/Venue"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequestError"
-                    }
-                }
-            }
-        },
-        "/health": {
-            "get": {
-                "tags": [
-                    "health"
-                ],
-                "summary": "To test if API service is available.",
-                "operationId": "testHealth",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "http",
-                                    "example": "OK"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequestError"
-                    }
-                }
-            }
-        },
-        "/categories": {
-            "get": {
-                "tags": [
-                    "category"
-                ],
-                "summary": "Get all venue categories.",
-                "operationId": "getCategories",
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "totalRecords": {
-                                            "type": "integer",
-                                            "example": 7
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Category"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequestError"
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "GeneratedId": {
-                "type": "string",
-                "example": "5f251cd4204ca44a9c2102ae"
-            },
-            "Link": {
-                "type": "string",
-                "example": "www.website.com.sg"
-            },
-            "Price": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "pricing": {
-                            "type": "string",
-                            "example": "100 dollars per hour"
-                        },
-                        "dayOfWeek": {
-                            "type": "string",
-                            "example": "Monday"
-                        },
-                        "time": {
-                            "type": "string",
-                            "example": "09:00 - 02:00"
-                        }
-                    }
-                }
-            },
-            "Ratings": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 5,
-                "example": 2
-            },
-            "Images": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "example": "www.image.com"
-                }
-            },
-            "Tags": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "example": "Food"
-                }
-            },
-            "Category": {
-                "type": "object",
-                "properties": {
-                    "_id": {
-                        "$ref": "#/components/schemas/GeneratedId"
-                    },
-                    "categoryName": {
-                        "type": "string",
-                        "example": "F&B"
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "Explore our list of restaurants and Cafes which make great places for meetings or celebrations.."
-                    }
-                }
-            },
-            "Venue": {
-                "type": "object",
-                "properties": {
-                    "_id": {
-                        "$ref": "#/components/schemas/GeneratedId"
-                    },
-                    "ratings": {
-                        "$ref": "#/components/schemas/Ratings"
-                    },
-                    "link": {
-                        "$ref": "#/components/schemas/Link"
-                    },
-                    "images": {
-                        "type": "array",
-                        "$ref": "#/components/schemas/Images"
-                    },
-                    "title": {
-                        "type": "string",
-                        "example": "Title Of Venue"
-                    },
-                    "location": {
-                        "type": "string",
-                        "example": "Location Of Venue"
-                    },
-                    "tags": {
-                        "type": "array",
-                        "$ref": "#/components/schemas/Tags"
-                    },
-                    "price": {
-                        "$ref": "#/components/schemas/Price"
-                    },
-                    "pax": {
-                        "type": "integer",
-                        "example": 40
-                    },
-                    "description": {
-                        "type": "string",
-                        "example": "Description of Venue"
-                    },
-                    "facilities": {
-                        "type": "string",
-                        "example": "Air conditioning, Bring your own stuff."
-                    },
-                    "promos": {
-                        "type": "string",
-                        "example": "Free 1 bottle of mineral water for each guest. One free flow of chinese tea for each room. 10% discount for all booking."
-                    }
-                }
-            },
-            "Error": {
-                "type": "object",
-                "properties": {
-                    "error": {
-                        "type": "object",
-                        "properties": {
-                            "code": {
-                                "type": "string",
-                                "example": "ABC1123"
-                            },
-                            "message": {
-                                "type": "string",
-                                "example": "Short error message here"
-                            }
-                        },
-                        "required": [
-                            "code",
-                            "message"
-                        ]
-                    }
-                },
-                "required": [
-                    "error"
-                ]
-            }
-        },
-        "responses": {
-            "BadRequestError": {
-                "description": "Bad request",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/Error"
-                        },
-                        "example": {
-                            "error": {
-                                "code": "ABC1123",
-                                "message": "Invalid parameters"
-                            }
-                        }
-                    }
-                }
-            },
-            "UnauthorizedError": {
-                "description": "Access token is missing or invalid",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/Error"
-                        },
-                        "example": {
-                            "error": {
-                                "code": "ABC1123",
-                                "message": "Unauthorized",
-                                "description": "Unauthorized"
-                            }
-                        }
-                    }
-                }
-            },
-            "NotFoundError": {
-                "description": "Resource is not found",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/Error"
-                        },
-                        "example": {
-                            "error": {
-                                "code": "ABC1123",
-                                "message": "Resource is not found",
-                                "description": "Resource is not foun"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
-            }
-        }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CherryPicker API Service",
+    "description": "These are the API definitions for CherryPicker Project. As of now, this API Service is deployed on AWS. User can choose to access the link at: https://1xvwcs2af5.execute-api.us-east-1.amazonaws.com/dev/api/0.1 followed by the route",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "local_dev_url": "http://localhost:9000/api/0.1",
+      "deployed_url": "https://1xvwcs2af5.execute-api.us-east-1.amazonaws.com/dev/api/0.1"
     }
+  ],
+  "paths": {
+    "/venues": {
+      "get": {
+        "tags": ["venues"],
+        "summary": "Get all Venues",
+        "description": "This API Call will return venues stored in the DB based on the filters. Only 10 results will be returned at any point in time. Please pass in the following parameters to receive a result. Example: https://1xvwcs2af5.execute-api.us-east-1.amazonaws.com/dev/api/0.1/venues?category=foodBeverages&keyword=restaurant&region=east&pax=70&ratings=2&price=300&activePage=3",
+        "operationId": "getAllVenues",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "activePage",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The number of pages (of 10 entries) to skip before retrieving the result set."
+          },
+          {
+            "in": "query",
+            "name": "keyword",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user's input in the search bar."
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The category that the user wants to view."
+          },
+          {
+            "in": "query",
+            "name": "region",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["North", "South", "East", "West", "Central"]
+            },
+            "description": "The region of venue."
+          },
+          {
+            "in": "query",
+            "name": "pax",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of pax."
+          },
+          {
+            "in": "query",
+            "name": "ratings",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of ratings."
+          },
+          {
+            "in": "query",
+            "name": "price",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The maximum price of venue."
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Below is an example format of a single returned item upon a successful operation. Note that only 10 of such objects would be returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalRecords": {
+                      "type": "integer",
+                      "example": 40
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Venue"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          }
+        }
+      }
+    },
+    "/venues/{id}": {
+      "get": {
+        "tags": ["venues"],
+        "summary": "Get more information about a single venue.",
+        "description": "Please pass in the ID of the single venue that you want to search for as a query path. http://localhost:9000/api/0.1/venues/{id}",
+        "operationId": "getSingleVenue",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/GeneratedId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Below is an example format of a single returned item upon a successful operation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Venue"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": ["health"],
+        "summary": "To test if API service is available.",
+        "operationId": "testHealth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "http",
+                  "example": "OK"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["category"],
+        "summary": "Get all venue categories.",
+        "operationId": "getCategories",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalRecords": {
+                      "type": "integer",
+                      "example": 7
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Category"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GeneratedId": {
+        "type": "string",
+        "example": "5f251cd4204ca44a9c2102ae"
+      },
+      "Link": {
+        "type": "string",
+        "example": "www.website.com.sg"
+      },
+      "Price": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "pricing": {
+              "type": "string",
+              "example": "100 dollars per hour"
+            },
+            "dayOfWeek": {
+              "type": "string",
+              "example": "Monday"
+            },
+            "time": {
+              "type": "string",
+              "example": "09:00 - 02:00"
+            }
+          }
+        }
+      },
+      "Ratings": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 5,
+        "example": 2
+      },
+      "Images": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "www.image.com"
+        }
+      },
+      "Tags": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "example": "Food"
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/GeneratedId"
+          },
+          "categoryName": {
+            "type": "string",
+            "example": "F&B"
+          },
+          "description": {
+            "type": "string",
+            "example": "Explore our list of restaurants and Cafes which make great places for meetings or celebrations.."
+          }
+        }
+      },
+      "Venue": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "$ref": "#/components/schemas/GeneratedId"
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Ratings"
+          },
+          "link": {
+            "$ref": "#/components/schemas/Link"
+          },
+          "images": {
+            "type": "array",
+            "$ref": "#/components/schemas/Images"
+          },
+          "title": {
+            "type": "string",
+            "example": "Title Of Venue"
+          },
+          "location": {
+            "type": "string",
+            "example": "Location Of Venue"
+          },
+          "tags": {
+            "type": "array",
+            "$ref": "#/components/schemas/Tags"
+          },
+          "price": {
+            "$ref": "#/components/schemas/Price"
+          },
+          "pax": {
+            "type": "integer",
+            "example": 40
+          },
+          "description": {
+            "type": "string",
+            "example": "Description of Venue"
+          },
+          "facilities": {
+            "type": "string",
+            "example": "Air conditioning, Bring your own stuff."
+          },
+          "promos": {
+            "type": "string",
+            "example": "Free 1 bottle of mineral water for each guest. One free flow of chinese tea for each room. 10% discount for all booking."
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "example": "ABC1123"
+              },
+              "message": {
+                "type": "string",
+                "example": "Short error message here"
+              }
+            },
+            "required": ["code", "message"]
+          }
+        },
+        "required": ["error"]
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": {
+                "code": "ABC1123",
+                "message": "Invalid parameters"
+              }
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": {
+                "code": "ABC1123",
+                "message": "Unauthorized",
+                "description": "Unauthorized"
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Resource is not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": {
+                "code": "ABC1123",
+                "message": "Resource is not found",
+                "description": "Resource is not foun"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
 }
