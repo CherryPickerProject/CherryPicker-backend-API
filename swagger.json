@@ -13,7 +13,9 @@
   "paths": {
     "/venues": {
       "get": {
-        "tags": ["venues"],
+        "tags": [
+          "venues"
+        ],
         "summary": "Get all Venues",
         "description": "This API Call will return venues stored in the DB based on the filters. Only 10 results will be returned at any point in time. Please pass in the following parameters to receive a result. Example: https://1xvwcs2af5.execute-api.us-east-1.amazonaws.com/dev/api/0.1/venues?category=foodBeverages&keyword=restaurant&region=east&pax=70&ratings=2&price=300&activePage=3",
         "operationId": "getAllVenues",
@@ -52,7 +54,13 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": ["North", "South", "East", "West", "Central"]
+              "enum": [
+                "North",
+                "South",
+                "East",
+                "West",
+                "Central"
+              ]
             },
             "description": "The region of venue."
           },
@@ -120,7 +128,9 @@
     },
     "/venues/{id}": {
       "get": {
-        "tags": ["venues"],
+        "tags": [
+          "venues"
+        ],
         "summary": "Get more information about a single venue.",
         "description": "Please pass in the ID of the single venue that you want to search for as a query path. http://localhost:9000/api/0.1/venues/{id}",
         "operationId": "getSingleVenue",
@@ -159,7 +169,9 @@
     },
     "/health": {
       "get": {
-        "tags": ["health"],
+        "tags": [
+          "health"
+        ],
         "summary": "To test if API service is available.",
         "operationId": "testHealth",
         "responses": {
@@ -182,7 +194,9 @@
     },
     "/categories": {
       "get": {
-        "tags": ["category"],
+        "tags": [
+          "category"
+        ],
         "summary": "Get all venue categories.",
         "operationId": "getCategories",
         "responses": {
@@ -277,6 +291,14 @@
           "description": {
             "type": "string",
             "example": "Explore our list of restaurants and Cafes which make great places for meetings or celebrations.."
+          },
+          "topTwoPhotos": {
+            "type": "array",
+            "$ref": "#/components/schemas/Images"
+          },
+          "tags": {
+            "type": "array",
+            "$ref": "#/components/schemas/Tags"
           }
         }
       },
@@ -344,10 +366,15 @@
                 "example": "Short error message here"
               }
             },
-            "required": ["code", "message"]
+            "required": [
+              "code",
+              "message"
+            ]
           }
         },
-        "required": ["error"]
+        "required": [
+          "error"
+        ]
       }
     },
     "responses": {
