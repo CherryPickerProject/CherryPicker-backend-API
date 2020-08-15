@@ -21,7 +21,7 @@ async function getAllFromElastic(query) {
     //     .query(
     //         esb.boolQuery()
     //             .must(
-    //                 // esb.multiMatchQuery(['tags', 'description', 'title', 'facilities'], query.keyword),
+    //                 // esb.multiMatchQuery(['location','tags', 'description', 'title', 'facilities'], query.keyword),
     //                 // esb.multiMatchQuery(['tags', 'description', 'title', 'facilities'], query.category),
     //                 esb.termsQuery('link', "https://www.venuerific.com/sg/venues/miska-cafe")
     //                 // from S$2500 hirefee
