@@ -11,7 +11,6 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-  console.log('get one');
   if (
     VenueSchema.getOneVenue.validate(req.params.id, { stripUnknown: true })
       .error
