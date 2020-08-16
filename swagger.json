@@ -295,10 +295,6 @@
           "topTwoPhotos": {
             "type": "array",
             "$ref": "#/components/schemas/Images"
-          },
-          "tags": {
-            "type": "array",
-            "$ref": "#/components/schemas/Tags"
           }
         }
       },
