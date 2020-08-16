@@ -1,24 +1,32 @@
 const elasticsearch = require('elasticsearch');
+const AWS = require('aws-sdk');
+const AWSConnector = require('http-aws-es');
+const elasticsearchIndex = "cherrypickerdb-venues-index"; // This is the name of the index created in another cherrypicker project repository-logstash
 let elasticClient;
-const elasticsearchIndex = "cherrypickerdb" // This is the default index created by mongo-connector in another repository
+
+// Need to define config outside as the elasticsearch client is not able to read it from within.
+const config = AWS.config.update({
+    credentials: new AWS.Credentials(process.env.ELASTIC_AWS_ACCESS_KEY, process.env.ELASTIC_AWS_SECRET_KEY),
+    region: 'us-east-1' //Free AWS account hosted here
+})
 
 async function connect() {
     const elasticHost = process.env.ELASTIC_SEARCH_ENDPOINT;
-    const password = process.env.ELASTIC_SEARCH_PASSWORD;
-    const username = process.env.ELASTIC_SEARCH_USERNAME;
 
     elasticClient = new elasticsearch.Client({
+        connectionClass: AWSConnector,
         host: elasticHost,
-        httpAuth: `${username}:${password}`
+        amazonES: config
     });
 
     elasticClient.ping({
         // ping usually has a 3000ms timeout
-        requestTimeout: 1000
+        requestTimeout: 4000
     }, function (error) {
         if (error) {
             console.log(error)
             console.log('Elasticsearch cluster is down!');
+            // TODO: Throw an error to return back and execute Mongodb query
         } else {
             console.log('Elasticsearch cluster is running...');
         }
@@ -26,16 +34,31 @@ async function connect() {
 }
 
 async function getAllVenues(requestBody) {
+    if (elasticClient == undefined) {
+        await connect();
+    }
     const results = await elasticClient.search({ index: elasticsearchIndex, body: requestBody.toJSON() })
     const resultsHits = results.hits
 
     const formattedData = resultsHits.hits.map((eachItem) => {
-        let data = eachItem._source
-        data._id = eachItem._id // TODO: Update to read from mongoID
+        let data = {
+            "_id": eachItem._source.mongo_id,
+            "ratings": eachItem._source.ratings, //TODO: Remove Ratings from returned results...might not want to consider this field anymore
+            "link": eachItem._source.link,
+            "images": eachItem._source.images,
+            "title": eachItem._source.title,
+            "location": eachItem._source.location,
+            "tags": eachItem._source.tags,
+            "price": eachItem._source.price,
+            "pax": eachItem._source.pax,
+            "description": eachItem._source.description,
+            "facilities": eachItem._source.facilities,
+            "promos": eachItem._source.promos,
+        }
+
         return data
     })
 
-    console.log(resultsHits)
     return { totalRecords: resultsHits.total.value, data: formattedData };
 }
 

@@ -16,6 +16,9 @@ async function getAllFromElastic(query) {
     console.log("query is")
     console.log(query)
     // Offset for elastic-builder seems to be from 1 and not 0
+    const requestBody = esb.requestBodySearch()
+        .size(30)
+        .from(query.activePage);
 
     // const requestBody = esb.requestBodySearch()
     //     .query(
@@ -38,7 +41,7 @@ async function getAllFromElastic(query) {
     //     ).size(30)
     //     .from(query.activePage);
 
-    const requestBody = esb.termQuery('link', "https://www.venuerific.com/sg/venues/miska-cafe")
+    // const requestBody = esb.termQuery('link', "https://www.venuerific.com/sg/venues/miska-cafe")
 
     return await Elasticsearch.getAllVenues(requestBody)
 }
