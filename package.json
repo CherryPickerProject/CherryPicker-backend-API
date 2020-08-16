@@ -2,11 +2,11 @@
   "name": "cherrypicker-backend-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index",
-    "dev": "SET NODE_ENV=development && nodemon --watch src src/index.js"
+    "start": "node src/app",
+    "dev": "SET NODE_ENV=development && nodemon --watch src src/app.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "@elastic/elasticsearch": "^7.8.0",
     "@hapi/joi": "^17.1.1",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "elastic-builder": "^2.7.1",
     "elasticsearch": "^16.7.1",
@@ -30,6 +31,7 @@
     "http-status-codes": "^1.4.0",
     "mongodb": "^3.6.0",
     "nodemon": "^2.0.4",
+    "serverless-http": "^2.5.0",
     "swagger-ui-express": "^4.1.4"
   }
 }
