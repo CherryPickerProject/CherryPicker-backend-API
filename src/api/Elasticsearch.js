@@ -1,7 +1,7 @@
 const elasticsearch = require('elasticsearch');
 const AWS = require('aws-sdk');
 const AWSConnector = require('http-aws-es');
-const elasticsearchIndex = "cherrypickerdb-venues-index"; // This is the name of the index created in another cherrypicker project repository-logstash
+const elasticsearchIndex = "cherrypickerdb-venues-index-test2"; // This is the name of the index created in another cherrypicker project repository-logstash
 let elasticClient;
 
 // Need to define config outside as the elasticsearch client is not able to read it from within.
