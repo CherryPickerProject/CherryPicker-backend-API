@@ -40,6 +40,8 @@ async function getAllVenues(requestBody) {
     const results = await elasticClient.search({ index: elasticsearchIndex, body: requestBody.toJSON() })
     const resultsHits = results.hits
 
+    // DEBUG: currently has an issue :(
+    // https://github.com/elastic/logstash/issues/12180
     const formattedData = resultsHits.hits.map((eachItem) => {
         let data = {
             "_id": eachItem._source.mongo_id,
